@@ -97,7 +97,7 @@ footer{padding:30px 5vw 90px;color:#7482b8;border-top:1px solid var(--line);marg
 </head>
 <body>
 <div id="site">
-<header><img id="logo" alt="CodeHost logo" hidden><span class="brand">CodeHost Info</span><a class="gear" href="#admin" aria-label="Admin settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a></header>
+<header><img id="logo" alt="CodeHost logo" hidden><span class="brand">CodeHost Info</span></header>
 <div class="hero"><h1 id="ht">CodeHost Info</h1><p id="hp"></p></div>
 <section><h2>Our Founders</h2><div class="scene" id="r1"></div></section>
 <section><h2>Our Team</h2><div class="scene" id="r2"></div></section>
@@ -113,6 +113,8 @@ footer{padding:30px 5vw 90px;color:#7482b8;border-top:1px solid var(--line);marg
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 const SUPABASE_URL='https://ycpvhfpcirjxxlvtmmhj.supabase.co', SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcHZoZnBjaXJqeHhsdnRtbWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwNTQ3MjQsImV4cCI6MjEwODYzMDcyNH0.Nzz0vfTzlSNgZzo-zTR6FL8TOqS4fsO08CiuQpnFba4';
+/* Secret admin address:  https://YOURDOMAIN/#<ADMIN_KEY>  -  change this text to your own secret */
+const ADMIN_KEY='codehost-panel-k7q2x9';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const FALLBACK="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect width='150' height='150' fill='%2301321f'/%3E%3C/svg%3E";
@@ -225,7 +227,7 @@ const addL=()=>{const t=$('#l_t').value.trim(),u=$('#l_u').value.trim();if(!t||!
   return run(async()=>{const {error}=await sb.from('links').insert({title:t,url:u,sort:Date.now()%1e9});if(error)throw error},'Link added')};
 
 let wasAdmin=false;
-function route(){const h=location.hash,a=h==='#admin',pr=h.startsWith('#profile-');
+function route(){const h=location.hash,a=h==='#'+ADMIN_KEY,pr=h.startsWith('#profile-');
   $('#admin').style.display=a?'block':'none';$('#site').style.display=(a||pr)?'none':'block';$('#profile').style.display=pr?'block':'none';$('#wa').style.display=a?'none':'';
   if(a)adminView();else{if(wasAdmin)loadSite();if(pr)showProfile(h.slice(9))}
   wasAdmin=a}
